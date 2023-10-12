@@ -1,0 +1,11 @@
+.nav {
+  background-color: #eee;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav h1 {
+  color: rgba(89, 90, 89, 0.933);
+}

@@ -1,7 +1,12 @@
 import "./App.css";
+import { LoginPage } from "./pages/login-page";
 
 function App() {
-  return <div>My e-commerce site</div>;
+  return (
+    <main>
+      <LoginPage />
+    </main>
+  );
 }
 
 export default App;
