@@ -9,7 +9,6 @@ type TLoginApiResponse = {
 
 export function loginApi(data: TLoginApi): Promise<TLoginApiResponse> {
   return new Promise((resolve, reject) => {
-    console.log("data", data);
     fetch("https://fakestoreapi.com/auth/login", {
       method: "POST",
       headers: {
