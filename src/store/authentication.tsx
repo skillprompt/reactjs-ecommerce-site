@@ -22,8 +22,11 @@ const AuthContext = createContext<TAuth>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const tokenVal = localStorage.getItem("token") || "";
+  const isLoggedInVal = localStorage.getItem("isLoggedIn") || "false";
+
+  const [token, setToken] = useState(tokenVal);
+  const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInVal === "true");
 
   const updateStore = ({
     token,
@@ -34,6 +37,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }) => {
     setToken(token);
     setIsLoggedIn(isLoggedIn);
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("isLoggedIn", isLoggedIn ? "true" : "false");
   };
 
   return (
