@@ -4,6 +4,7 @@ import { LoginPage } from "./pages/login-page";
 import { HomePage } from "./pages/home-page";
 import { AboutUsPage } from "./pages/about-us";
 import { DashboardPage } from "./pages/dashboard";
+import { AuthProvider } from "./store/authentication";
 
 const routes = createBrowserRouter([
   {
@@ -25,7 +26,11 @@ const routes = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={routes}></RouterProvider>;
+  return (
+    <AuthProvider>
+      <RouterProvider router={routes}></RouterProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

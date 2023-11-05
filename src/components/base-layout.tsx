@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import styles from "../styles/login-page.module.css";
+import { useAuth } from "../store/authentication";
 
 export function BaseLayout({ children }: { children: React.ReactNode }) {
+  const auth = useAuth();
+
   return (
     <div>
       <nav className={styles.nav}>
@@ -10,9 +13,11 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
         </h1>
 
         <ul>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
+          {auth.isLoggedIn ? null : (
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          )}
           <li>
             <Link to="/about-us">About us</Link>
           </li>

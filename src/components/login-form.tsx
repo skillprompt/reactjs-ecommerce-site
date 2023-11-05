@@ -2,11 +2,14 @@ import { useState } from "react";
 import styles from "./login-form.module.css";
 import { loginApi } from "../data/login";
 import { useNavigate } from "react-router";
+import { useAuth } from "../store/authentication";
 
 export function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const auth = useAuth();
 
   const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -37,6 +40,14 @@ export function LoginForm() {
       password,
     });
     console.log("login response", loginResponse);
+
+    /**
+     * update the store before navigation
+     */
+    auth.updateStore({
+      token: loginResponse.token,
+      isLoggedIn: true,
+    });
     /**
      * login is successfull, go to dashboard
      */
