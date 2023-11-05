@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./login-form.module.css";
 import { loginApi } from "../data/login";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../store/authentication";
 
 export function LoginForm() {
@@ -23,9 +23,9 @@ export function LoginForm() {
     setPassword(event.currentTarget.value);
   };
 
-  const handleLoginClick: React.MouseEventHandler<HTMLButtonElement> = async (
-    event
-  ) => {
+  const handleLoginClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async () => {
     console.log("submit data", {
       username,
       password,
@@ -49,10 +49,14 @@ export function LoginForm() {
       isLoggedIn: true,
     });
     /**
-     * login is successfull, go to dashboard
+     * login is successful, go to dashboard
      */
     navigate("/dashboard");
   };
+
+  if (auth.isLoggedIn) {
+    return <Navigate to={"/dashboard"} />;
+  }
 
   return (
     <>
