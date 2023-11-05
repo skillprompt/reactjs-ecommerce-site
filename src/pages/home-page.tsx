@@ -1,10 +1,9 @@
 import { BaseLayout } from "../components/base-layout";
-import { LoginForm } from "../components/login-form";
 
-export function LoginPage() {
+export function HomePage() {
   return (
     <BaseLayout>
-      <LoginForm />
+      <h3>I am homepage</h3>
     </BaseLayout>
   );
 }

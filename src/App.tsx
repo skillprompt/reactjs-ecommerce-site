@@ -1,27 +1,17 @@
-import { Link, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { LoginPage } from "./pages/login-page";
+import { HomePage } from "./pages/home-page";
+import { AboutUsPage } from "./pages/about-us";
 
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <div>
-        <h2>React S-com Site</h2>
-        <ul>
-          <li>
-            <Link to={`/login`}>Login</Link>
-          </li>
-          <li>
-            <Link to={`/about-us`}>About Us</Link>
-          </li>
-        </ul>
-      </div>
-    ),
+    element: <HomePage />,
   },
   {
     path: "about-us",
-    element: <p>I am about us page</p>,
+    element: <AboutUsPage />,
   },
   {
     path: "login",
