@@ -1,10 +1,12 @@
 import { useState } from "react";
 import styles from "./login-form.module.css";
 import { loginApi } from "../data/login";
+import { useNavigate } from "react-router";
 
 export function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -35,6 +37,10 @@ export function LoginForm() {
       password,
     });
     console.log("login response", loginResponse);
+    /**
+     * login is successfull, go to dashboard
+     */
+    navigate("/dashboard");
   };
 
   return (
