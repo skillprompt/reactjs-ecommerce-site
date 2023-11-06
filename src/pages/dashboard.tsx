@@ -1,4 +1,5 @@
 import { BaseLayout } from "../components/base-layout";
+import { ProductList } from "../components/products-list";
 import { useAuth } from "../store/authentication";
 
 export function DashboardPage() {
@@ -7,7 +8,9 @@ export function DashboardPage() {
   if (auth.isLoggedIn) {
     return (
       <BaseLayout>
-        <div>i am dashboard</div>
+        <div>
+          <ProductList />
+        </div>
       </BaseLayout>
     );
   }
