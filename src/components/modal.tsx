@@ -10,18 +10,37 @@ export function Modal({
   onCloseModal: () => void;
 }) {
   return isOpen ? (
-    <div>
-      <h2>{title}</h2>
-      <button
-        type="button"
-        onClick={() => {
-          onCloseModal();
+    <div
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "rgba(0,0,0,0.5)",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
         }}
       >
-        Close
-      </button>
+        <h2>{title}</h2>
+        <button
+          type="button"
+          onClick={() => {
+            onCloseModal();
+          }}
+        >
+          Close
+        </button>
 
-      <div>{children}</div>
+        <div>{children}</div>
+      </div>
     </div>
   ) : null;
 }
