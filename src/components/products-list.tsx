@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { TProduct, getProducts } from "../data/product";
 
-export function ProductList() {
+export function ProductList({
+  handleProductEdit,
+}: {
+  handleProductEdit: () => void;
+}) {
   const [products, setProducts] = useState<TProduct[]>([]);
 
   useEffect(() => {
@@ -45,6 +49,9 @@ export function ProductList() {
               Id: {product.id}
               Title: {product.title}
               Image: {product.image}
+              <button type="button" onClick={handleProductEdit}>
+                Edit
+              </button>
             </div>
           );
         })}
