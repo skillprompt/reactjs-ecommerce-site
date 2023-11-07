@@ -5,6 +5,7 @@ import { HomePage } from "./pages/home-page";
 import { AboutUsPage } from "./pages/about-us";
 import { DashboardPage } from "./pages/dashboard";
 import { AuthProvider } from "./store/authentication";
+import { ZodPage } from "./pages/zod";
 
 const routes = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const routes = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardPage />,
+  },
+  {
+    path: "/zod",
+    element: <ZodPage />,
   },
 ]);
 
