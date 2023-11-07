@@ -4,13 +4,12 @@ import { TProduct, getProducts } from "../data/product";
 export function ProductList({
   handleProductEdit,
 }: {
-  handleProductEdit: () => void;
+  handleProductEdit: (selectedProduct: TProduct) => void;
 }) {
   const [products, setProducts] = useState<TProduct[]>([]);
 
   useEffect(() => {
     getProducts().then((data) => {
-      console.log("data", data);
       setProducts(data);
     });
   }, []);
@@ -49,7 +48,7 @@ export function ProductList({
               Id: {product.id}
               Title: {product.title}
               Image: {product.image}
-              <button type="button" onClick={handleProductEdit}>
+              <button type="button" onClick={() => handleProductEdit(product)}>
                 Edit
               </button>
             </div>

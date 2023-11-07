@@ -1,12 +1,25 @@
 import { useForm } from "react-hook-form";
 import { TProduct } from "../data/product";
 
-export function EditProductForm() {
+export function EditProductForm({
+  selectedProduct,
+}: {
+  selectedProduct: TProduct;
+}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TProduct>();
+  } = useForm<TProduct>({
+    defaultValues: {
+      id: selectedProduct.id,
+      title: selectedProduct.title,
+      price: selectedProduct.price,
+      category: selectedProduct.category,
+      description: selectedProduct.description,
+      image: selectedProduct.image,
+    },
+  });
 
   const onSubmit = () => {};
 
@@ -50,7 +63,14 @@ export function EditProductForm() {
 
         <div>
           <label htmlFor="image">Image</label>
-          <img src={""} alt="product image" />
+          <img
+            style={{
+              width: 200,
+              height: 200,
+            }}
+            src={selectedProduct.image}
+            alt="product image"
+          />
         </div>
 
         <input type="submit" />

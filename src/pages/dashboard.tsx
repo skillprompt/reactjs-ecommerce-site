@@ -4,17 +4,28 @@ import { Modal } from "../components/modal";
 import { EditProductForm } from "../components/product-form";
 import { ProductList } from "../components/products-list";
 import { useAuth } from "../store/authentication";
+import { TProduct } from "../data/product";
 
 export function DashboardPage() {
   const auth = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [product, setProduct] = useState<TProduct | null>(null);
 
   const handleCloseModal = () => {
     setIsOpen(false);
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (selectedProduct: TProduct) => {
+    /**
+     * send data to the modal
+     */
+    console.log("selectedProduct", selectedProduct);
+    setProduct(selectedProduct);
+
+    /**
+     * then open the modal
+     */
     setIsOpen(true);
   };
 
@@ -27,7 +38,7 @@ export function DashboardPage() {
             title="Edit Product"
             onCloseModal={handleCloseModal}
           >
-            <EditProductForm />
+            {product ? <EditProductForm selectedProduct={product} /> : null}
           </Modal>
           <ProductList handleProductEdit={handleOpenModal} />
         </div>
