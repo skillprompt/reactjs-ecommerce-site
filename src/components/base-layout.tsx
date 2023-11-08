@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/login-page.module.css";
 import { useAuth } from "../store/authentication";
+import { ProductProvider, useProductCtx } from "../store/product";
 
 export function BaseLayout({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
@@ -30,28 +31,39 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div>
-      <nav className={styles.nav}>
-        <h1>
-          <Link to="/">E-commmerce</Link>
-        </h1>
+    <ProductProvider>
+      <div>
+        <nav className={styles.nav}>
+          <h1>
+            <Link to="/">E-commmerce</Link>
+          </h1>
 
-        <ul>
-          {auth.isLoggedIn ? (
+          <ul>
+            {auth.isLoggedIn ? (
+              <li>
+                <button onClick={handleLogout}>Logout</button>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            )}
             <li>
-              <button onClick={handleLogout}>Logout</button>
+              <Link to="/about-us">About us</Link>
             </li>
-          ) : (
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          )}
-          <li>
-            <Link to="/about-us">About us</Link>
-          </li>
-        </ul>
-      </nav>
-      <section className={styles.formSection}>{children}</section>
-    </div>
+          </ul>
+          <ShowSelectedProduct />
+        </nav>
+        <section className={styles.formSection}>{children}</section>
+      </div>
+    </ProductProvider>
   );
+}
+
+function ShowSelectedProduct() {
+  const productCtx = useProductCtx();
+
+  return productCtx.product?.id ? (
+    <p>Selected Product Name: {productCtx.product?.title}</p>
+  ) : null;
 }

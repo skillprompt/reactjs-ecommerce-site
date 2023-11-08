@@ -6,6 +6,7 @@ import { AboutUsPage } from "./pages/about-us";
 import { DashboardPage } from "./pages/dashboard";
 import { AuthProvider } from "./store/authentication";
 import { ZodPage } from "./pages/zod";
+import { BaseLayout } from "./components/base-layout";
 
 const routes = createBrowserRouter([
   {
@@ -22,7 +23,11 @@ const routes = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardPage />,
+    element: (
+      <BaseLayout>
+        <DashboardPage />
+      </BaseLayout>
+    ),
   },
   {
     path: "/zod",
