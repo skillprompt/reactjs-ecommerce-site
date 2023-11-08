@@ -3,7 +3,7 @@ import z from "zod";
 const product = {
   id: 1,
   title: "one product afhjhafjkah hfakjh",
-  price: 100,
+  price: 1000000,
   email: "test@test.com",
   tags: ["electronic", "clothing"],
 };
@@ -23,8 +23,17 @@ const ProductSchema = z.object({
 export function ZodPage() {
   const isValidData = ProductSchema.safeParse(product);
   if (isValidData.success) {
-    return <div>Valid data {JSON.stringify(isValidData.data, null, 2)}</div>;
+    return (
+      <div>
+        Valid data
+        <pre>{JSON.stringify(isValidData, null, 2)}</pre>
+      </div>
+    );
   }
 
-  return <p>Invalid Data {JSON.stringify(isValidData.error, null, 2)}</p>;
+  return (
+    <p>
+      Invalid Data <pre>{JSON.stringify(isValidData.error, null, 2)}</pre>
+    </p>
+  );
 }

@@ -12,6 +12,8 @@ export function DashboardPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [product, setProduct] = useState<TProduct | null>(null);
 
+  const [products, setProducts] = useState<TProduct[]>([]);
+
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -29,6 +31,21 @@ export function DashboardPage() {
     setIsOpen(true);
   };
 
+  const afterProductUpdate = (updatedData: TProduct) => {
+    const updatedProducts = products.map((product) => {
+      if (product.id === updatedData.id) {
+        /**
+         * we are updating that product
+         */
+        return updatedData;
+      } else {
+        return product;
+      }
+    });
+    setProducts(updatedProducts);
+    setIsOpen(false);
+  };
+
   if (auth.isLoggedIn) {
     return (
       <BaseLayout>
@@ -38,9 +55,18 @@ export function DashboardPage() {
             title="Edit Product"
             onCloseModal={handleCloseModal}
           >
-            {product ? <EditProductForm selectedProduct={product} /> : null}
+            {product ? (
+              <EditProductForm
+                selectedProduct={product}
+                afterProductUpdate={afterProductUpdate}
+              />
+            ) : null}
           </Modal>
-          <ProductList handleProductEdit={handleOpenModal} />
+          <ProductList
+            handleProductEdit={handleOpenModal}
+            setProducts={setProducts}
+            products={products}
+          />
         </div>
       </BaseLayout>
     );
