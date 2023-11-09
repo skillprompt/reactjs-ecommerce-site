@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { TProduct, getProducts } from "../data/product";
+import { useCartStore } from "../store/cart";
 
 export function ProductList({
   handleProductEdit,
@@ -11,6 +12,7 @@ export function ProductList({
   products: TProduct[];
 }) {
   const [loading, setLoading] = useState(false);
+  const increaseQuantity = useCartStore((state) => state.increaseQuantity);
 
   useEffect(() => {
     setLoading(true);
@@ -19,6 +21,10 @@ export function ProductList({
       setLoading(false);
     });
   }, []);
+
+  // const handleCartIncrease = () => {
+  //   increaseQuantity();
+  // };
 
   return (
     <div>
@@ -57,12 +63,25 @@ export function ProductList({
                 Id: {product.id}
                 Title: {product.title}
                 Image: {product.image}
-                <button
-                  type="button"
-                  onClick={() => handleProductEdit(product)}
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                  }}
                 >
-                  Edit
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => handleProductEdit(product)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => increaseQuantity(product)}
+                  >
+                    Add to cart
+                  </button>
+                </div>
               </div>
             );
           })}
