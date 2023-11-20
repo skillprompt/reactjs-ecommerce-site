@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
-import { TProduct, getProducts } from "../data/product";
+import { TProduct, addToCart, getProducts } from "../data/product";
 import { useCartStore } from "../store/cart";
+import { useAuth } from "../store/authentication";
+
+function getUserIdFromToken(token: string) {
+  /**
+   * do something with the token:
+   * validate the token
+   * and decode its data
+   */
+  token.trim();
+  return 2;
+}
 
 export function ProductList({
   handleProductEdit,
@@ -11,6 +22,7 @@ export function ProductList({
   setProducts: (arg: TProduct[]) => void;
   products: TProduct[];
 }) {
+  const auth = useAuth();
   const [loading, setLoading] = useState(false);
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
 
@@ -25,6 +37,24 @@ export function ProductList({
   // const handleCartIncrease = () => {
   //   increaseQuantity();
   // };
+
+  const handleCartIncrease = async (product: TProduct) => {
+    increaseQuantity(product);
+    /**
+     * Send fetch request to the backend to update the cart
+     */
+    console.log("auth", auth.token);
+    addToCart({
+      userId: getUserIdFromToken(auth.token),
+      date: new Date(),
+      products: [
+        {
+          productId: product.id,
+          quantity: 1,
+        },
+      ],
+    });
+  };
 
   return (
     <div>
@@ -77,7 +107,7 @@ export function ProductList({
                   </button>
                   <button
                     type="button"
-                    onClick={() => increaseQuantity(product)}
+                    onClick={() => handleCartIncrease(product)}
                   >
                     Add to cart
                   </button>

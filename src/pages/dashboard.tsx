@@ -51,8 +51,6 @@ export function DashboardPage() {
     setIsOpen(false);
   };
 
-  console.log("productCtx.product", productCtx.product);
-
   if (auth.isLoggedIn) {
     return (
       <div>
