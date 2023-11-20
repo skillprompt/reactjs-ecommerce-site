@@ -65,9 +65,9 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             Cart <sup>{cartQuantity}</sup>
             <div>
               <ul>
-                {productsInCart.map((product) => {
+                {productsInCart.map((product, index) => {
                   return (
-                    <li key={product.id}>
+                    <li key={`${product.id}_${index}`}>
                       {product.title}
                       <button
                         type="button"

@@ -36,13 +36,20 @@ export const useCartStore = create<TCart>((set) => {
          */
         // state.quantity = state.quantity - 1;
         const oldProducts = [...state.products];
-        const updatedProducts = oldProducts.filter(
-          (product) => product.id !== productToRemove.id
+        // const updatedProducts = oldProducts.filter(
+        //   (product) => product.id !== productToRemove.id
+        // );
+        const productToRemoveFoundIndex = oldProducts.findIndex(
+          (product) => product.id === productToRemove.id
         );
+
+        if (productToRemoveFoundIndex >= 0) {
+          oldProducts.splice(productToRemoveFoundIndex, 1);
+        }
 
         return {
           ...state,
-          products: updatedProducts,
+          products: oldProducts,
           quantity: state.quantity === 0 ? 0 : state.quantity - 1,
         };
       });
