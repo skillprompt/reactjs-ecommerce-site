@@ -5,12 +5,15 @@ import { ProductList } from "../components/products-list";
 import { useAuth } from "../store/authentication";
 import { TProduct } from "../data/product";
 import { useProductCtx } from "../store/product";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function DashboardPage() {
   const auth = useAuth();
   const productCtx = useProductCtx();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const queryClient = useQueryClient();
 
   /**
    * Try to move this product to the store
@@ -36,7 +39,7 @@ export function DashboardPage() {
     setIsOpen(true);
   };
 
-  const afterProductUpdate = (updatedData: TProduct) => {
+  const afterProductUpdate = async (updatedData: TProduct) => {
     const updatedProducts = products.map((product) => {
       if (product.id === updatedData.id) {
         /**
@@ -49,6 +52,10 @@ export function DashboardPage() {
     });
     setProducts(updatedProducts);
     setIsOpen(false);
+
+    await queryClient.invalidateQueries({
+      queryKey: ["products"],
+    });
   };
 
   if (auth.isLoggedIn) {
@@ -66,11 +73,7 @@ export function DashboardPage() {
             />
           ) : null}
         </Modal>
-        <ProductList
-          handleProductEdit={handleOpenModal}
-          setProducts={setProducts}
-          products={products}
-        />
+        <ProductList handleProductEdit={handleOpenModal} />
       </div>
     );
   }

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { TProduct, addToCart, getProducts } from "../data/product";
 import { useCartStore } from "../store/cart";
 import { useAuth } from "../store/authentication";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 function getUserIdFromToken(token: string) {
   /**
@@ -15,28 +15,22 @@ function getUserIdFromToken(token: string) {
 
 export function ProductList({
   handleProductEdit,
-  setProducts,
-  products,
 }: {
   handleProductEdit: (selectedProduct: TProduct) => void;
-  setProducts: (arg: TProduct[]) => void;
-  products: TProduct[];
 }) {
   const auth = useAuth();
-  const [loading, setLoading] = useState(false);
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
 
-  useEffect(() => {
-    setLoading(true);
-    getProducts().then((data) => {
-      setProducts(data);
-      setLoading(false);
-    });
-  }, []);
+  /**
+   * We need to use react query
+   */
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
 
-  // const handleCartIncrease = () => {
-  //   increaseQuantity();
-  // };
+  console.log("data", data);
 
   const handleCartIncrease = async (product: TProduct) => {
     increaseQuantity(product);
@@ -61,8 +55,9 @@ export function ProductList({
       <h2>Products</h2>
 
       {/* list of products */}
+      {error ? <p>{error.message}</p> : null}
 
-      {loading ? (
+      {isLoading ? (
         <p>Loading product data..</p>
       ) : (
         <div
@@ -71,7 +66,7 @@ export function ProductList({
             gridTemplateColumns: "1fr 1fr",
           }}
         >
-          {products.map((product) => {
+          {data?.map((product) => {
             return (
               <div
                 key={product.id}

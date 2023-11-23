@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { TProduct } from "../data/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 
 const ProductSchema = z.object({
   id: z.number(),
@@ -36,29 +37,70 @@ export function EditProductForm({
     mode: "all",
   });
 
-  const onSubmit = (data: TProduct) => {
-    console.log("submit data", data);
+  const updateProduct = useMutation<
+    { message: string },
+    { message: string },
+    TProduct,
+    unknown
+  >({
+    mutationFn: async (data) => {
+      return new Promise((resolve, reject) => {
+        const random = Math.random();
+        if (random < 0.5) {
+          // resolve({
+          //   message: "success",
+          // });
 
-    /**
-     * send request to the server to update the data
-     */
-    fetch(`https://fakestoreapi.com/products/${data.id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        title: data.title,
-        price: data.price,
-        description: data.description,
-        image: data.image,
-        category: data.category,
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        /**
-         * update the data on the ui as well
-         */
-        afterProductUpdate(data);
+          /**
+           * send request to the server to update the data
+           */
+          fetch(`https://fakestoreapi.com/products/${data.id}`, {
+            method: "PUT",
+            body: JSON.stringify({
+              title: data.title,
+              price: data.price,
+              description: data.description,
+              image: data.image,
+              category: data.category,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              resolve(data);
+            })
+            .catch((e) =>
+              reject({
+                message: e.message,
+              })
+            );
+        } else {
+          reject({
+            message: "Something went wrong",
+          });
+        }
       });
+    },
+  });
+
+  const onSubmit = async (data: TProduct) => {
+    try {
+      const updated = await updateProduct.mutateAsync(
+        {
+          ...data,
+        },
+        {
+          onSuccess(data) {
+            console.log("data success", data);
+          },
+          onError(error) {
+            console.log("mutation failed", error);
+          },
+        }
+      );
+      console.log("updated...", updated);
+    } catch (e) {
+      console.error("something went wrong", e);
+    }
   };
 
   console.error("validation error", errors);
